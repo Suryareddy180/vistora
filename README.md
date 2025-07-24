@@ -46,3 +46,29 @@ pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
+
+
+```
+#📁 Project Structure
+``` bash
+vistora/
+├── accounts/        # Vendor & user management
+├── home/            # Core views: booking, trip planning, search
+├── static/          # JS, CSS, images
+├── templates/       # All frontend templates
+├── media/           # Uploaded hotel images
+├── db.sqlite3       # Local dev database
+└── manage.py
+```
+###🧑‍💻 Author
+N.Surya Prakash Reddy
+
+###LinkedIn:https://www.linkedin.com/in/nsprakashreddy/
+
+
+
+Let me know if you want:
+- Deployment steps for **Render/Heroku/Vercel**
+- A license badge or GitHub actions badge
+- Upload-ready screenshots (just share if you want me to generate them)
+
