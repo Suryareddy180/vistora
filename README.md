@@ -32,6 +32,7 @@ Vistora is a full-stack Django-based web application that offers a smart hotel b
 ## 📷 Screenshots
 
 ![Vistora Home](./screenshots/index.png)
+![Vistora customer](./screenshots/customer_dashboard.png)
 ![Trip Planner](./screenshots/plan_trip.png)
 ![Vendor Dashboard](./screenshots/vendor_dashboard.png)
 
