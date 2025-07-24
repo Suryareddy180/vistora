@@ -1,0 +1,60 @@
+{% extends "home/base.html" %}
+{% block start %}
+
+<div class="container mt-5">
+  <div class="card shadow p-4">
+
+    <h2 class="card-title">{{ hotel.hotel_name }}</h2>
+
+    <p>
+      Price: <span class="badge text-bg-danger">{{ hotel.hotel_price }}</span>
+      Offer Price: <span class="badge text-bg-success">{{ hotel.hotel_offer_price }}</span>
+    </p>
+
+    <hr>
+
+    <p><strong>Location:</strong> {{ hotel.hotel_location }}</p>
+
+    <!-- Static Amenities (You can make these dynamic later) -->
+    <div class="mb-3">
+      <span class="badge text-bg-primary">Swimming Pool</span>
+      <span class="badge text-bg-primary">AC</span>
+    </div>
+
+    <p class="mt-4">{{ hotel.hotel_description|safe }}</p>
+
+    <!-- Hotel Images -->
+    <div class="row mt-4 mb-4">
+      {% for image in hotel.hotel_images.all %}
+        <div class="col-2">
+          <img src="/media/{{ image.image }}" class="img-fluid rounded" style="height: 150px;">
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Booking Form -->
+    {% if request.user.is_authenticated %}
+      <form method="POST">
+        {% csrf_token %}
+        {% include "accounts/alerts.html" %}
+
+        <div class="mb-3">
+          <label for="start_date" class="form-label">Start Date</label>
+          <input type="date" name="start_date" id="start_date" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label for="end_date" class="form-label">End Date</label>
+          <input type="date" name="end_date" id="end_date" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-danger mt-3">Book Now</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login_page' %}" class="btn btn-success">Login to Book</a>
+    {% endif %}
+
+  </div>
+</div>
+
+{% endblock %}

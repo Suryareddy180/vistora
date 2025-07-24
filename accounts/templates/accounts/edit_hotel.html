@@ -1,0 +1,75 @@
+{% extends "accounts/vendor_base.html" %}
+
+{% block start %}
+<div class="container mt-5 pt-5 pb-5">
+  <div class="col-6 mx-auto card shadow p-4" style="border:none">
+    <h2 class="mb-3">Edit Hotel</h2>
+
+    <ul class="list-group mb-3">
+      {% for booking in hotel.bookings.all %}
+        <li class="list-group-item">
+          Start Date - {{ booking.booking_start_date }} |
+          End Date - {{ booking.booking_end_date }}
+        </li>
+      {% empty %}
+        <li class="list-group-item">No bookings yet.</li>
+      {% endfor %}
+    </ul>
+
+    <form method="POST">
+      {% csrf_token %}
+      {% include "accounts/alerts.html" %}
+
+      <div class="mb-3">
+        <label for="hotel_name" class="form-label">Hotel Name</label>
+        <input id="hotel_name" type="text" name="hotel_name" value="{{ hotel.hotel_name }}" class="form-control">
+      </div>
+
+      <div class="mb-3">
+        <label for="hotel_description" class="form-label">Hotel Description</label>
+        <div class="form-floating">
+          <textarea name="hotel_description" id="hotel_description" class="form-control" placeholder="Enter description">{{ hotel.hotel_description }}</textarea>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="hotel_price" class="form-label">Hotel Price</label>
+        <input id="hotel_price" type="number" name="hotel_price" value="{{ hotel.hotel_price }}" class="form-control">
+      </div>
+
+      <div class="mb-3">
+        <label for="ameneties" class="form-label">Hotel Amenities</label>
+        <select name="ameneties" id="ameneties" class="form-select" multiple>
+          {% for amenetie in ameneties %}
+            <option value="{{ amenetie.id }}" {% if amenetie in hotel.amenities.all %} selected {% endif %}>
+              {{ amenetie.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="hotel_offer_price" class="form-label">Hotel Offer Price</label>
+        <input id="hotel_offer_price" type="number" name="hotel_offer_price" value="{{ hotel.hotel_offer_price }}" class="form-control">
+      </div>
+
+      <div class="mb-3">
+        <label for="hotel_location" class="form-label">Hotel Location</label>
+        <input id="hotel_location" type="text" name="hotel_location" value="{{ hotel.hotel_location }}" class="form-control">
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">Update Hotel</button>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Froala Editor -->
+<script>
+  var editor = new FroalaEditor('#hotel_description', {
+    heightMin: 200
+  });
+</script>
+{% endblock %}

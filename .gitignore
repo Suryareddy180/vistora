@@ -1,0 +1,21 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Environment variables and secrets
+.env
+
+# PyCharm project settings
+.idea/
+
+# Virtual environments
+env/
+venv/
+ENV/
+.venv/
+venv.bak/
+visit/
+
+# Logs
+*.log

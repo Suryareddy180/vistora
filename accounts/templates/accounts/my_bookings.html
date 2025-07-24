@@ -1,0 +1,83 @@
+{% extends "home/base.html" %}
+
+{% block start %}
+<div class="container mt-5">
+    <h2 class="fw-bold mb-4">My Bookings</h2>
+
+    <!-- Alerts -->
+    {% if messages %}
+      {% for message in messages %}
+        {% if "AI itinerary couldn't be generated" not in message %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% if bookings %}
+        <div class="row g-4">
+            {% for booking in bookings %}
+            <div class="col-md-6">
+                <div class="card shadow p-3">
+                    <h5 class="card-title">{{ booking.hotel.hotel_name }}</h5>
+                    <p>
+                        <strong>Check-in:</strong> {{ booking.booking_start_date|date:"F j, Y" }}<br>
+                        <strong>Check-out:</strong> {{ booking.booking_end_date|date:"F j, Y" }}<br>
+                        <strong>Price Paid:</strong> ₹{{ booking.price }}<br>
+
+                        {% if booking.is_paid %}
+                            <span class="badge bg-success">Paid</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Pending Payment</span>
+                        {% endif %}
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        {% if not booking.is_paid %}
+                            <!-- Pay Now for pending -->
+                            <a href="{% url 'dummy_payment' booking.id %}" class="btn btn-success btn-sm">
+                                Pay Now
+                            </a>
+                        {% endif %}
+
+                        {% if booking.booking_end_date < today %}
+                            <!-- Outdated bookings: Delete -->
+                            <a href="{% url 'delete_booking' booking.id %}"
+                               class="btn btn-outline-danger btn-sm"
+                               onclick="return confirm('Delete this outdated booking?');">
+                               Delete Booking
+                            </a>
+                        {% else %}
+                            <!-- Upcoming bookings: Cancel -->
+                            <a href="{% url 'cancel_booking' booking.id %}"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Cancel this upcoming booking?');">
+                               Cancel Booking
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            You have no bookings yet.
+        </div>
+    {% endif %}
+</div>
+
+<!-- Auto-dismiss alerts after 3 seconds -->
+<script>
+  setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+      alert.classList.remove('show');
+      alert.classList.add('fade');
+      setTimeout(() => alert.remove(), 500);
+    });
+  }, 3000);
+</script>
+{% endblock %}

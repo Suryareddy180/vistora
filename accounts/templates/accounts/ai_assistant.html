@@ -1,0 +1,73 @@
+{% extends "accounts/vendor_base.html" %}
+{% block start %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-danger">💼 Vistora SmartDesk</h2>
+    <p class="text-muted">Your AI-powered toolkit to grow your hotel business</p>
+
+    <form method="POST" class="card p-4 shadow-sm border-0">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label fw-bold">Select AI Feature</label>
+            <select name="feature" class="form-select" required>
+                <option value="">-- Choose --</option>
+                <option value="description">✍️ Write Hotel Description</option>
+                <option value="pricing">💸 Suggest Dynamic Pricing</option>
+                <option value="taglines">📣 Generate Marketing Taglines</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Hotel Name</label>
+            <input type="text" name="hotel_name" class="form-control" placeholder="E.g. The Royal Retreat" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Location</label>
+            <input type="text" name="location" class="form-control" placeholder="E.g. Manali, Himachal Pradesh" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Current Price (₹)</label>
+            <input type="number" name="price" class="form-control" placeholder="E.g. 2500">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Features</label>
+            <input type="text" name="features" class="form-control" placeholder="E.g. Free breakfast, Pool, Wi-Fi">
+        </div>
+
+        <button type="submit" class="btn btn-danger fw-bold px-4">🚀 Run with SmartDesk</button>
+    </form>
+
+    {% if ai_response %}
+    <div class="card mt-4 shadow-sm border-0">
+        <div class="card-header bg-danger text-white fw-bold">🎯 AI Response</div>
+        <div class="card-body">
+            <pre class="mb-3 scroll-box">{{ ai_response }}</pre>
+            <button class="btn btn-outline-secondary btn-sm" onclick="copyResponse()">📋 Copy to Clipboard</button>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function copyResponse() {
+    navigator.clipboard.writeText(document.querySelector('pre').innerText);
+    alert("✅ Copied to clipboard!");
+}
+</script>
+
+<style>
+/* Add scroll bar and fixed height for long AI responses */
+.scroll-box {
+    max-height: 400px; /* Change as needed */
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+</style>
+{% endblock %}

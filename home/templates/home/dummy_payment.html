@@ -1,0 +1,12 @@
+{% extends "home/base.html" %}
+{% block start %}
+<div class="container mt-5">
+    <h2>Dummy Payment</h2>
+    <p>Booking for: <strong>{{ booking.hotel.hotel_name }}</strong></p>
+    <p>Total Amount: ₹{{ booking.price }}</p>
+    <form method="post" action="{% url 'confirm_dummy_payment' booking.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Simulate Payment Success</button>
+    </form>
+</div>
+{% endblock %}

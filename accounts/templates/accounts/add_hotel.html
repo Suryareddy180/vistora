@@ -1,0 +1,68 @@
+{% extends "accounts/vendor_base.html" %}
+
+{% block start %}
+<div class="container mt-5 pt-5 pb-5">
+  <div class="col-6 mx-auto card shadow p-4" style="border:none">
+
+    <h2 class="mb-4">Add Hotel</h2>
+
+    <form method="POST">
+      {% include "accounts/alerts.html" %}
+      {% csrf_token %}
+
+      <!-- Hotel Name -->
+      <div class="mb-3">
+        <label for="hotel_name" class="form-label">Hotel Name</label>
+        <input type="text" name="hotel_name" id="hotel_name" class="form-control" placeholder="Enter hotel name">
+      </div>
+
+      <!-- Hotel Description -->
+      <div class="mb-3">
+        <label for="hotel_description" class="form-label">Hotel Description</label>
+        <textarea name="hotel_description" id="hotel_description" class="form-control" placeholder="Enter hotel description" rows="3"></textarea>
+      </div>
+
+      <!-- Hotel Price -->
+      <div class="mb-3">
+        <label for="hotel_price" class="form-label">Hotel Price</label>
+        <input type="number" name="hotel_price" id="hotel_price" class="form-control" placeholder="Enter original price">
+      </div>
+
+      <!-- Hotel Offer Price -->
+      <div class="mb-3">
+        <label for="hotel_offer_price" class="form-label">Hotel Offer Price</label>
+        <input type="number" name="hotel_offer_price" id="hotel_offer_price" class="form-control" placeholder="Enter offer price">
+      </div>
+
+      <!-- Hotel Amenities -->
+      <div class="mb-3">
+        <label for="amenities" class="form-label">Hotel Amenities</label>
+        <select name="amenities" id="amenities" class="form-select" multiple>
+          {% for amenity in ameneties %}
+            <option value="{{ amenity.id }}">{{ amenity.name }}</option>
+          {% endfor %}
+        </select>
+        <small class="form-text text-muted d-block mb-2">
+          Hold Ctrl (Windows) or Cmd (Mac) to select multiple options.
+        </small>
+        <p class="text-danger small">
+        <strong>Need a custom amenity?</strong> Just email us at
+        <a href="mailto:vistoraofficial07@gmail.com">vistoraofficial07@gmail.com</a>.
+      </p>
+      </div>
+
+      <!-- Hotel Location -->
+      <div class="mb-3">
+        <label for="hotel_location" class="form-label">Hotel Location</label>
+        <input type="text" name="hotel_location" id="hotel_location" class="form-control" placeholder="Enter location">
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-end">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}

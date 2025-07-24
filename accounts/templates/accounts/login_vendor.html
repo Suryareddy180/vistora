@@ -1,0 +1,43 @@
+{% extends "accounts/vendor_base.html" %}
+
+{% block start %}
+
+<div class="container my-5 py-4" style="margin-bottom: 0 !important; padding-bottom: 0 !important;">
+  <div class="col-6 mx-auto card shadow p-4 border-0">
+    <h2 class="mb-4 text-center">VENDOR LOGIN</h2>
+
+    <form method="POST">
+      {% csrf_token %}
+      {% include "accounts/alerts.html" %}
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input id="email" type="email" name="email" class="form-control" required>
+        <div class="form-text">We'll never share your email with anyone else.</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input id="password" type="password" name="password" class="form-control" required>
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-success" onclick="sendOtp()">Login With OTP</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function sendOtp() {
+    const email = document.getElementById('email').value;
+    if (!email) {
+      alert("Email cannot be blank");
+      return;
+    }
+    window.location.href = `/account/send_vendor_otp/${email}/`;
+  }
+</script>
+
+{% endblock %}

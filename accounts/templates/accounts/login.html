@@ -1,0 +1,48 @@
+{% extends "home/base.html" %}
+{% block start %}
+
+<div class="container my-5 py-4" style="margin-bottom: 0 !important; padding-bottom: 0 !important;">
+  <div class="col-6 mx-auto card shadow p-4 border-0">
+
+    <h3 class="mb-4 text-center">Login</h3>
+
+    <form method="POST">
+      {% csrf_token %}
+      {% include "accounts/alerts.html" %}
+
+      <!-- Email Input -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input id="email" type="email" name="email" class="form-control" required>
+        <div class="form-text">We'll never share your email with anyone else.</div>
+      </div>
+
+      <!-- Password Input -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input id="password" type="password" name="password" class="form-control" required>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex justify-content-between mt-4">
+        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="button" class="btn btn-success" onclick="sendOtp()">Login With OTP</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<!-- JS Function for OTP -->
+<script>
+  function sendOtp() {
+    var email = document.getElementById('email').value;
+    if (email === "") {
+      alert("Email cannot be blank");
+      return;
+    }
+    window.location.href = `/account/send_otp/${email}/`;
+  }
+</script>
+
+{% endblock %}

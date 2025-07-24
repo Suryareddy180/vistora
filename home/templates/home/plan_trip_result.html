@@ -1,0 +1,79 @@
+{% extends "home/base.html" %}
+{% block start %}
+<div class="container-fluid mt-5 px-4">
+
+    <!-- Trip Plan Header -->
+    <div class="text-center mb-5">
+        <h1 class="text-danger fw-bold display-5">🌟 {{ trip_days }}-Day Trip Plan for {{ destination }}</h1>
+        <p class="lead text-muted fs-5">
+            📅 <strong>Dates:</strong> {{ start_date }} to {{ end_date }}<br>
+            💰 <strong>Budget:</strong> ₹{{ budget }}
+        </p>
+    </div>
+
+    <!-- Suggested Hotels -->
+    <div class="card shadow-sm mb-5 border-0 w-100">
+        <div class="card-header bg-danger text-white fw-bold fs-5">
+            🏨 Suggested Hotels
+        </div>
+        <div class="card-body">
+            {% if hotels %}
+            <div class="row">
+                {% for hotel in hotels %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-light shadow-sm">
+                        {% if hotel.hotel_image %}
+                        <img src="{{ hotel.hotel_image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ hotel.hotel_name }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title text-danger fw-bold">{{ hotel.hotel_name }}</h5>
+                            <p class="card-text text-muted mb-2">Offer Price: ₹{{ hotel.hotel_offer_price }}</p>
+                            {% if hotel.hotel_rating %}
+                            <p class="mb-2">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= hotel.hotel_rating|floatformat:0 %}
+                                        ⭐
+                                    {% else %}
+                                        ☆
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="text-muted small">({{ hotel.hotel_rating|floatformat:1 }}/5)</span>
+                            </p>
+                            {% endif %}
+                            <a href="{% url 'hotel_details' hotel.hotel_slug %}" class="btn btn-outline-danger btn-sm">View Hotel</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-muted">No hotels found for <strong>{{ destination }}</strong>.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- AI Recommended Itinerary -->
+    <div class="card shadow-sm mb-5 border-0 w-100">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center flex-wrap">
+            <span class="fw-bold fs-5">🗺️ AI Recommended Itinerary</span>
+            <div class="d-flex gap-2">
+                <a href="{% url 'plan_trip' %}" class="btn btn-light btn-sm shadow-sm">
+                    🔄 Plan Another Trip
+                </a>
+                <a href="{% url 'download_trip_pdf' %}?destination={{ destination }}&start_date={{ start_date }}&end_date={{ end_date }}&budget={{ budget }}&ai_itinerary={{ ai_itinerary_html|urlencode }}"
+                   class="btn btn-outline-light btn-sm shadow-sm">
+                    📥 Download PDF
+                </a>
+            </div>
+        </div>
+        <div class="card-body fs-6" style="max-height: 70vh; overflow-y: auto;">
+            {% if ai_itinerary_html %}
+                {{ ai_itinerary_html|safe }}
+            {% else %}
+                <p class="text-muted">Itinerary could not be generated. Please try again later.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

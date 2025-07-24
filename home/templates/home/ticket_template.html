@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VISTORA Ticket</title>
+    {% if not for_pdf %}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    {% endif %}
+</head>
+<body style="font-family:{% if for_pdf %}Arial, sans-serif{% else %}'Poppins', sans-serif{% endif %}; background:{% if for_pdf %}#ffffff{% else %}#f6f8fa{% endif %}; margin:0; padding:0; color:#333;">
+
+    {% if not for_pdf %}
+    <!-- 📧 EMAIL BODY (Greeting + View Ticket Button) -->
+    <div style="max-width:600px; margin:30px auto; background:#fff; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.08); overflow:hidden; padding:30px;">
+        <div style="text-align:center; margin-bottom:20px;">
+            <img src="{% static 'images/logo2.png' %}" alt="VISTORA Logo" style="width:100px; height:auto;">
+        </div>
+        <div style="text-align:center; color:#d9534f;">
+            <h1 style="margin:0; font-size:24px;">Thank You for Booking with VISTORA!</h1>
+            <p style="margin-top:10px; font-size:16px;">
+                Your hotel ticket is ready and attached below.<br>
+                Please present it at the hotel check-in counter.
+            </p>
+        </div>
+        <div style="margin-top:30px; text-align:center;">
+            <a href="{{ request.build_absolute_uri }}/view-ticket/{{ booking.id }}" style="background:#d9534f; color:#fff; text-decoration:none; padding:12px 25px; border-radius:6px; font-weight:600; display:inline-block;">View Your Ticket</a>
+        </div>
+        <div style="margin-top:30px; text-align:center; font-size:13px; color:#999;">
+            Need help? Contact us at <strong>support@vistora.com</strong>.
+        </div>
+    </div>
+    {% else %}
+    <!-- 📄 PDF BODY (Full Ticket Details) -->
+    <div style="max-width:800px; margin:0 auto; background:#fff; border:1px solid #d9534f; border-radius:8px; overflow:hidden; padding:8mm;">
+        <div style="text-align:center; margin-bottom:5mm;">
+            <img src="{% static 'images/logo2.png' %}" alt="VISTORA Logo" style="width:80px; height:auto;">
+        </div>
+
+        <div style="background-color:#d9534f; color:#fff; text-align:center; padding:6mm;">
+            <h1 style="margin:0; font-size:14pt; font-weight:600;">VISTORA HOTEL BOARDING PASS</h1>
+            <div style="margin-top:5px; font-size:9pt; background:#fff; color:#d9534f; display:inline-block; padding:3px 8px; border-radius:4px; font-weight:500;">
+                TICKET NO: TKT-{{ booking.id|add:"1000" }}
+            </div>
+        </div>
+
+        <div style="margin-top:6mm;">
+            <h2 style="font-size:11pt; color:#d9534f; margin-bottom:5px;">Guest Details</h2>
+            <ul style="margin:0; padding-left:18px; font-size:9pt; line-height:1.4;">
+                <li><strong>Name:</strong> {{ booking.booking_user.get_full_name }}</li>
+                <li><strong>Email:</strong> {{ booking.booking_user.email }}</li>
+                <li><strong>Check-in:</strong> {{ booking.booking_start_date }}</li>
+                <li><strong>Check-out:</strong> {{ booking.booking_end_date }}</li>
+            </ul>
+
+            <h2 style="font-size:11pt; color:#d9534f; margin-top:5mm; margin-bottom:5px;">Hotel Details</h2>
+            <ul style="margin:0; padding-left:18px; font-size:9pt; line-height:1.4;">
+                <li><strong>Hotel:</strong> {{ booking.hotel.hotel_name }}</li>
+                <li><strong>Location:</strong> {{ booking.hotel.hotel_location }}</li>
+                <li><strong>Total Paid:</strong> ₹{{ booking.price }}</li>
+            </ul>
+        </div>
+
+        <div style="text-align:center; margin-top:6mm;">
+            <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code" style="width:80px; height:auto; border-radius:4px;">
+            <p style="margin-top:4px; font-size:8pt;"><small>Scan for booking details</small></p>
+            <img src="data:image/png;base64,{{ barcode_base64 }}" alt="Barcode" style="width:140px; height:auto; margin-top:5px;">
+            <p style="margin-top:4px; font-size:8pt;"><small>Booking ID: #{{ booking.id }}</small></p>
+        </div>
+
+        <div style="background-color:#fff; text-align:center; padding:4mm; font-size:8pt; color:#666; border-top:1px solid #ddd;">
+            Please present this boarding pass at the hotel check-in counter.<br>
+            Thank you for choosing <strong style="color:#d9534f;">VISTORA</strong>.
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>

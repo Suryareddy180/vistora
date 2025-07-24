@@ -1,0 +1,77 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger shadow-lg py-2">
+  <div class="container-fluid">
+
+    <!-- Logo + Branding -->
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/" style="text-decoration: none;">
+      <div style="
+        height: 65px;
+        width: 65px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(255,255,255,0.5);
+      ">
+        <img src="{% static 'images/logo2.png' %}"
+             style="
+               height: 140%;
+               width: 140%;
+               object-fit: cover;
+               filter: brightness(1.1) contrast(1.2);
+             "
+             alt="Vistora Logo">
+      </div>
+      <span style="font-family: 'Poppins', sans-serif; font-size: 1.7rem; font-weight: 700; color: #fff;">
+        VISTORA
+      </span>
+    </a>
+
+    <!-- Mobile Toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active fw-semibold text-white" href="{% url 'index_main' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold text-white" href="{% url 'about' %}">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold text-white" href="{% url 'contact' %}">Contact</a>
+        </li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link fw-semibold text-white" href="{% url 'my_bookings' %}">My Bookings</a>
+        </li>
+        {% endif %}
+      </ul>
+
+      <!-- Action Buttons -->
+      <div class="d-flex gap-2 align-items-center ms-lg-3 mt-3 mt-lg-0">
+        {% if request.user.is_authenticated %}
+        <!-- Show Plan Trip only for logged in users -->
+        <a href="{% url 'plan_trip' %}" class="btn btn-warning text-dark fw-semibold px-3 rounded-pill shadow-sm">
+          ✈️ Plan Trip
+        </a>
+        <a class="btn btn-light text-danger fw-bold px-3 rounded-pill shadow-sm"
+           href="{% url 'logout_view' %}">Logout</a>
+        {% else %}
+        <a class="btn btn-light text-danger fw-bold px-3 rounded-pill shadow-sm"
+           href="{% url 'login_page' %}">Login</a>
+        <a class="btn btn-outline-light text-white fw-bold px-3 rounded-pill shadow-sm"
+           href="{% url 'register' %}">Register</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>

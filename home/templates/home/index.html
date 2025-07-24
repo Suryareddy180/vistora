@@ -1,0 +1,70 @@
+{% extends "home/base.html" %}
+{% block start %}
+
+<div class="container mt-2 pt-2 pb-5">
+
+  <!-- Welcome Message -->
+  <div class="text-center mb-3">
+    <h2 class="fw-bold">Welcome to VISTORA – Find Your Perfect Stay!</h2>
+    <p class="text-muted">Explore top hotels, compare offers, and book the one that suits you best.</p>
+  </div>
+
+  <!-- Search and Sort Form -->
+  <div class="col-6 mx-auto mb-4">
+    <form class="d-flex gap-2" method="GET">
+      <input type="text" name="search" class="form-control" placeholder="Search"
+             value="{{ request.GET.search }}">
+
+      <select class="form-select" name="sort_by">
+        <option value="">Choose</option>
+        <option value="sort_low" {% if request.GET.sort_by == 'sort_low' %}selected{% endif %}>Sort by Low to High</option>
+        <option value="sort_high" {% if request.GET.sort_by == 'sort_high' %}selected{% endif %}>Sort by High to Low</option>
+      </select>
+
+      <button type="submit" class="btn btn-warning">Search</button>
+    </form>
+  </div>
+
+  <!-- Hotel Cards -->
+  <div class="row g-4">
+    {% for hotel in hotels %}
+      <div class="col-lg-4 col-md-6">
+        <div class="card shadow-sm h-100 border-0">
+          <a href="{% url 'hotel_details' hotel.hotel_slug %}" class="text-decoration-none text-dark">
+
+            {% if hotel.hotel_images.first %}
+              <img src="/media/{{ hotel.hotel_images.first.image }}" class="card-img-top rounded-top" alt="{{ hotel.hotel_name }}" style="height: 200px; object-fit: cover;">
+            {% else %}
+              <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" class="card-img-top rounded-top" alt="No Image" style="height: 200px; object-fit: cover;">
+            {% endif %}
+
+            <div class="card-body">
+              <h5 class="card-title fw-semibold">{{ hotel.hotel_name }}</h5>
+              <p class="mb-1">
+                Price: <span class="badge bg-danger">{{ hotel.hotel_price }}</span><br>
+                Offer: <span class="badge bg-success">{{ hotel.hotel_offer_price }}</span>
+              </p>
+              <hr class="my-2">
+              <p class="text-muted small mb-2">{{ hotel.hotel_location }}</p>
+
+              <div class="d-flex flex-wrap gap-2">
+                {% for amenity in hotel.amenities.all %}
+                  <span class="badge bg-primary">{{ amenity.name }}</span>
+                {% empty %}
+                  <span class="badge bg-secondary">No Amenities</span>
+                {% endfor %}
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12 mt-5 text-center">
+        <p class="text-muted">No hotels found.</p>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}
