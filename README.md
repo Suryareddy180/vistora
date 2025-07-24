@@ -49,7 +49,7 @@ python manage.py runserver
 
 
 ```
-#📁 Project Structure
+📁 Project Structure
 ``` bash
 vistora/
 ├── accounts/        # Vendor & user management
@@ -60,10 +60,9 @@ vistora/
 ├── db.sqlite3       # Local dev database
 └── manage.py
 ```
-###🧑‍💻 Author
+🧑‍💻 Author
 N.Surya Prakash Reddy
-
-###LinkedIn:https://www.linkedin.com/in/nsprakashreddy/
+LinkedIn:https://www.linkedin.com/in/nsprakashreddy/
 
 
 
